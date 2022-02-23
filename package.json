@@ -1,0 +1,40 @@
+{
+	"name": "AskZeus",
+	"description": "weather report in the cli",
+	"version": "0.0.1",
+	"license": "UNLICENSED",
+	"bin": {
+		"AskZeus": "index.js",
+		"az": "index.js"
+	},
+	"author": {
+		"name": "Elia Chiarucci",
+		"email": "elia.chiarucci@gmail.com",
+		"url": "eliachiarucci.com"
+	},
+	"keywords": [
+		"AskZeus",
+		"Elia Chiarucci"
+	],
+	"files": [
+		"index.js",
+		"utils"
+	],
+	"scripts": {
+		"format": "prettier --write \"./**/*.{js,json}\""
+	},
+	"dependencies": {
+		"asciichart": "^1.5.25",
+		"chalk": "^4.1.2",
+		"cli-alerts": "^1.2.2",
+		"cli-handle-error": "^4.4.0",
+		"cli-handle-unhandled": "^1.1.1",
+		"cli-meow-help": "^2.0.2",
+		"cli-welcome": "^2.2.2",
+		"meow": "^9.0.0",
+		"node-fetch": "^2.6.7"
+	},
+	"devDependencies": {
+		"prettier": "^2.5.1"
+	}
+}

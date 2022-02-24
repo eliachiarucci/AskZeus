@@ -1,10 +1,10 @@
 {
 	"name": "askzeus",
 	"description": "weather report in the cli",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "MIT",
 	"bin": {
-		"AskZeus": "index.js",
+		"askzeus": "index.js",
 		"az": "index.js"
 	},
 	"author": {
@@ -18,7 +18,8 @@
 	],
 	"files": [
 		"index.js",
-		"utils"
+		"utils",
+    "settings.json"
 	],
 	"scripts": {
 		"format": "prettier --write \"./**/*.{js,json}\""

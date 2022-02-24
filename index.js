@@ -57,7 +57,6 @@ const config = require('./utils/config');
 
   const weatherQuery = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}`);
   const weatherRes = await weatherQuery.json();
-  //console.log(weatherRes);
   const { current, minutely, daily } = weatherRes;
   const { temp, feels_like, humidity, pressure, wind_speed } = current;
   const { temp: minTemp, temp: maxTemp } = daily[0];
@@ -82,19 +81,23 @@ const config = require('./utils/config');
     }
   }
 
-  const everyTenMinutes = minutely.filter((minute, index) => index % 10 === 0);
-  const everyTenMinutesParsed = everyTenMinutes.map(minute => ({...minute, time: `${new Date(minute.dt * 1000).getHours()}:${new Date(minute.dt * 1000).getMinutes()}`}));
+  const everyTenMinutes = minutely && minutely.filter((minute, index) => index % 10 === 0);
+  const everyTenMinutesParsed = everyTenMinutes && everyTenMinutes.map(minute => ({...minute, time: `${new Date(minute.dt * 1000).getHours()}:${new Date(minute.dt * 1000).getMinutes()}`}));
   log(chalk.bgBlack(chalk.white(`City: ${city} `)));
   log(chalk.green(`Current temperature: ${parseTemp({temp, system})}`));
   log(chalk.green(`Feels like: ${parseTemp({temp: feels_like, system})}`));
   log(chalk.cyan(`Conditions: ${description}`));
   log(chalk.cyan(`The wind blows at: ${parseSpeed({speed: wind_speed, system})}`));
   log("\n");
+  if(minutely) {
   log(chalk.blueBright(`Rain meter (in mm):`));
   log(chalk.blueBright(chart.plot(minutely.map(({precipitation}) => precipitation), { height: 6 })));
   log(chalk.green(`            `, everyTenMinutesParsed.map(({time}) => `${time}`).join('     ')));
+  } else {
+    log(chalk.yellow("No short-term detailed rain data available"));
+  }
   log("\n");
-  if(weatherRes.alerts.length > 0) {
+  if(weatherRes.alerts && weatherRes.alerts.length > 0) {
     weatherRes.alerts.forEach(alert => {
       log(chalk.yellow(`ALERT`));
       log(chalk.yellow(`-------------------------------------`));

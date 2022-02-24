@@ -18,7 +18,7 @@ const chart = require('asciichart')
 const { clear, debug, setDefault } = flags;
 let city = flags.city;
 const log = console.log;
-const { defaultCity, system, apiKey } = require('./settings.json');
+const { defaultCity, system, apiKey } = require('./utils/settings.json');
 const config = require('./utils/config');
 
 

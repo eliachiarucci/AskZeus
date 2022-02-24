@@ -1,7 +1,7 @@
 {
 	"name": "askzeus",
 	"description": "weather report in the cli",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"license": "MIT",
 	"bin": {
 		"askzeus": "index.js",
@@ -10,7 +10,7 @@
 	"author": {
 		"name": "Elia Chiarucci",
 		"email": "elia.chiarucci@gmail.com",
-		"url": "eliachiarucci.com"
+		"url": "https://eliachiarucci.com"
 	},
 	"keywords": [
 		"AskZeus",

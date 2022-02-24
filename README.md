@@ -2,6 +2,13 @@
 AskZeus is a node CLI to get weather info directly inside your terminal.
 ![CLI Screenshot](https://github.com/eliachiarucci/askzeus/blob/master/img/main.png?raw=true)
 
+## Installation
+You need to have node & npm installed.
+A global installation is required.
+```
+npm i askzeus -g
+```
+
 ## How it works
 This projects require you to get a free API key from openWeatherMap(https://openweathermap.org/price), the free key lets you call the API 1,000 times a day.
 You can set the key as follows:

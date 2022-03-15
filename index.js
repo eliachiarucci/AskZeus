@@ -155,7 +155,7 @@ const box = require('./display/box');
 	const todayDateTime = `${todayDate}/${todayMonth}/${todayYear}`;
 	log(
     box({
-      text: [`${getDate(1)}`, getDate(2), getDate(3)],
+      text: [getDate(1), getDate(2), getDate(3)],
 			extraInfo: [
 				` ${chalk.redBright(`Max: ${parseTemp({
 					temp: temp1.max,

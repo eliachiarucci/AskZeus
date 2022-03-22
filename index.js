@@ -29,6 +29,9 @@ const box = require('./display/box');
 		return;
 	}
 	if (flags.apiKey) {
+    if(typeof flags.apiKey !== 'string') {
+      return log(chalk.red(`API key should be as tring, please provide one using the command: az --apiKey <key>`));
+    }
 		config({ property: 'apiKey', value: flags.apiKey });
 		return log(chalk.green(`API key set to ${flags.apiKey}`));
 	}

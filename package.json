@@ -1,7 +1,7 @@
 {
 	"name": "askzeus",
 	"description": "weather report in the cli",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"license": "MIT",
 	"bin": {
 		"askzeus": "index.js",

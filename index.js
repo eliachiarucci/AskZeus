@@ -29,9 +29,13 @@ const box = require('./display/box');
 		return;
 	}
 	if (flags.apiKey) {
-    if(typeof flags.apiKey !== 'string') {
-      return log(chalk.red(`API key should be as tring, please provide one using the command: az --apiKey <key>`));
-    }
+		if (typeof flags.apiKey !== 'string') {
+			return log(
+				chalk.red(
+					`API key should be as tring, please provide one using the command: az --apiKey <key>`
+				)
+			);
+		}
 		config({ property: 'apiKey', value: flags.apiKey });
 		return log(chalk.green(`API key set to ${flags.apiKey}`));
 	}
@@ -86,9 +90,10 @@ const box = require('./display/box');
 	const weatherRes = await weatherQuery.json();
 	const { current, minutely, daily } = weatherRes;
 	const { temp, feels_like, humidity, pressure, wind_speed } = current;
-	const { temp: temp1, weather: weather1} = daily[1];
-	const { temp: temp2, weather: weather2} = daily[2];
-	const { temp: temp3, weather: weather3} = daily[3];
+	const { temp: temp0, weather: weather0 } = daily[0];
+	const { temp: temp1, weather: weather1 } = daily[1];
+	const { temp: temp2, weather: weather2 } = daily[2];
+	const { temp: temp3, weather: weather3 } = daily[3];
 	const { description } = current.weather[0];
 	const { sunrise, sunset } = current;
 
@@ -122,17 +127,22 @@ const box = require('./display/box');
 			)}:${parseToDoubleDigits(new Date(minute.dt * 1000).getMinutes())}`
 		}));
 	log(chalk.bgBlack(chalk.white(`City: ${city} `)));
-	log(chalk.green(`Current temperature: ${parseTemp({ temp, system })}`));
-	log(chalk.green(`Feels like: ${parseTemp({ temp: feels_like, system })}`));
-	log(chalk.cyan(`Conditions: ${description}`));
-	log(
-		chalk.cyan(
-			`The wind blows at: ${parseSpeed({ speed: wind_speed, system })}`
-		)
-	);
-	log('\n');
+  log('\n');
+  if (weatherRes.alerts && weatherRes.alerts.length > 0) {
+    weatherRes.alerts.forEach(alert => {
+      log(chalk.yellow(`ALERT`));
+			log(chalk.yellow(`-------------------------------------`));
+			log(chalk.italic(`From: ${chalk.yellow(alert.sender_name)}`));
+			log(chalk.italic(`Event: ${chalk.yellow(alert.event)}`));
+			log(
+        chalk.italic(`Description: ${chalk.yellow(alert.description)}`)
+        );
+      });
+      log('\n');
+	}
 	if (minutely) {
 		log(chalk.blueBright(`Rain meter (in mm):`));
+		log(chalk.blueBright(`--------------------`));
 		log(
 			chalk.blueBright(
 				chart.plot(
@@ -156,39 +166,59 @@ const box = require('./display/box');
 	const todayMonth = today.getMonth();
 	const todayYear = today.getFullYear();
 	const todayDateTime = `${todayDate}/${todayMonth}/${todayYear}`;
+	log(chalk.green(`Today's forecast and for the next 3 days: `));
+	log(chalk.green(`------------------------------------------`));
 	log(
-    box({
-      text: [getDate(1), getDate(2), getDate(3)],
+		box({
+			text: [getDate(0), getDate(1), getDate(2), getDate(3)],
 			extraInfo: [
-				` ${chalk.redBright(`Max: ${parseTemp({
-					temp: temp1.max,
-					system
-				})}`)}\n ${chalk.blueBright(`Min: ${parseTemp({ temp: temp1.min, system })}`)}\n ${chalk.green(`Weather: ${weather1[0].description}`)}`
-        ,
-        ` ${chalk.redBright(`Max: ${parseTemp({
-					temp: temp2.max,
-					system
-				})}`)}\n ${chalk.blueBright(`Min: ${parseTemp({ temp: temp2.min, system })}`)}\n ${chalk.green(`Weather: ${weather2[0].description}`)}`
-        ,
-        ` ${chalk.redBright(`Max: ${parseTemp({
-					temp: temp3.max,
-					system
-				})}`)}\n ${chalk.blueBright(`Min: ${parseTemp({ temp: temp3.min, system })}`)}\n ${chalk.green(`Weather: ${weather3[0].description}`)}`
+				` ${chalk.redBright(
+					`Max: ${parseTemp({
+						temp: temp0.max,
+						system
+					})}`
+				)}\n ${chalk.blueBright(
+					`Min: ${parseTemp({ temp: temp0.min, system })}`
+				)}\n ${chalk.green(`Weather: ${weather0[0].description}`)}`,
+				` ${chalk.redBright(
+					`Max: ${parseTemp({
+						temp: temp1.max,
+						system
+					})}`
+				)}\n ${chalk.blueBright(
+					`Min: ${parseTemp({ temp: temp1.min, system })}`
+				)}\n ${chalk.green(`Weather: ${weather1[0].description}`)}`,
+				` ${chalk.redBright(
+					`Max: ${parseTemp({
+						temp: temp2.max,
+						system
+					})}`
+				)}\n ${chalk.blueBright(
+					`Min: ${parseTemp({ temp: temp2.min, system })}`
+				)}\n ${chalk.green(`Weather: ${weather2[0].description}`)}`,
+				` ${chalk.redBright(
+					`Max: ${parseTemp({
+						temp: temp3.max,
+						system
+					})}`
+				)}\n ${chalk.blueBright(
+					`Min: ${parseTemp({ temp: temp3.min, system })}`
+				)}\n ${chalk.green(`Weather: ${weather3[0].description}`)}`
 			]
 		})
 	);
-	if (weatherRes.alerts && weatherRes.alerts.length > 0) {
-		weatherRes.alerts.forEach(alert => {
-			log(chalk.yellow(`ALERT`));
-			log(chalk.yellow(`-------------------------------------`));
-			log(chalk.italic(`From: ${chalk.yellow(alert.sender_name)}`));
-			log(chalk.italic(`Event: ${chalk.yellow(alert.event)}`));
-			log(
-				chalk.italic(`Description: ${chalk.yellow(alert.description)}`)
-			);
-			log('\n');
-		});
-	}
+
+	log(chalk.white(`Today's weather:`));
+  log(chalk.white(`----------------------------`));
+	log(chalk.green(`- Current temperature: ${parseTemp({ temp, system })}`));
+	log(chalk.green(`- Feels like: ${parseTemp({ temp: feels_like, system })}`));
+	log(chalk.cyan(`- Conditions: ${description}`));
+	log(
+		chalk.cyan(
+			`- The wind blows at: ${parseSpeed({ speed: wind_speed, system })}`
+		)
+	);
+	log(chalk.white(`----------------------------`));
 	debug && cliLog(flags);
 })();
 
@@ -200,8 +230,8 @@ function getDate(day) {
 			: date.getDate();
 	const todayMonth =
 		date.getMonth().toString().length != 2
-			? `0${date.getMonth()}`
-			: date.getMonth();
+			? `0${date.getMonth() + 1}`
+			: date.getMonth() + 1;
 	const todayYear = date.getFullYear();
 	return `${todayDate}/${todayMonth}/${todayYear}`;
 }

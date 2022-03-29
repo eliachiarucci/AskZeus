@@ -219,6 +219,7 @@ const box = require('./display/box');
 		)
 	);
 	log(chalk.white(`----------------------------`));
+	log(chalk.white(`\n`));
 	debug && cliLog(flags);
 })();
 

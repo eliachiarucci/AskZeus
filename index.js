@@ -212,10 +212,10 @@ const box = require('./display/box');
   log(chalk.white(`----------------------------`));
 	log(chalk.green(`- Current temperature: ${parseTemp({ temp, system })}`));
 	log(chalk.green(`- Feels like: ${parseTemp({ temp: feels_like, system })}`));
-	log(chalk.cyan(`- Conditions: ${description}`));
+	log(chalk.cyan(`- Sky: ${description}`));
 	log(
 		chalk.cyan(
-			`- The wind blows at: ${parseSpeed({ speed: wind_speed, system })}`
+			`- Wind Speed: ${parseSpeed({ speed: wind_speed, system })}`
 		)
 	);
 	log(chalk.white(`----------------------------`));
@@ -234,5 +234,6 @@ function getDate(day) {
 			? `0${date.getMonth() + 1}`
 			: date.getMonth() + 1;
 	const todayYear = date.getFullYear();
+
 	return `${todayDate}/${todayMonth}/${todayYear}`;
 }

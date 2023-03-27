@@ -1,8 +1,10 @@
+const chalk = require("chalk");
+
 module.exports = function renderBox ({text: texts, extraInfo}) {
   if(!Array.isArray(texts)) {
     texts = [texts];
   }
-  const boxTexts = texts.map((text, i) => {
+  const boxTexts = texts.map((text, i, color) => {
     let boxText = ``;
     const textLines = text.split("\n");
     const longestLineLength = textLines.sort((a,b) => a.length>b.length)[0].length;
@@ -21,7 +23,7 @@ module.exports = function renderBox ({text: texts, extraInfo}) {
           } else {
             const char = textLinesParsed.find(char => char.x === x && char.y === y);
             if(char) {
-              boxText += char.char;
+              boxText += i === 0 ? chalk.green(char.char) : char.char;
               continue;
             }
             boxText += " ";
